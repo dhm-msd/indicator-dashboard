@@ -4,10 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var worldbank_indicators = require('./wordbank_indicators')
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var worldbank_indicators = require('./worldbank_indicators')
 
 var app = express();
 let array = ["CC.PER.RNK","GE.PER.RNK","PV.PER.RNK","RL.PER.RNK","RQ.PER.RNK", "VA.PER.RNK"];
@@ -22,24 +19,34 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', async function(req,res,next){
+
+app.use('/', require('./routes/indicators'))
+
+app.get('/', async function(req,res,next){
+  worldbank_indicators.getCoreDataFiltered().then(async function(coreData) {
+    res.render("index.jade", {indicators:coreData})
+  })
+
+})
+
+app.get('/getData', async function(req,res,next){
   worldbank_indicators.getCoreData().then(async function(coreData) {
-    //console.log(coreData)
-  
     let total_object = []
     for(let indicator of coreData[1]){
-      //if(indicator.id)
       if(array.indexOf(indicator.id) > -1){
         indicator.ind_data = await worldbank_indicators.getIndicatorInfo(indicator.id)
-        console.log("GOT")
+        if(!indicator.ind_data.cached){
+          worldbank_indicators.cacheObject(indicator.id,indicator.ind_data)
+        }
+
         total_object.push(indicator)  
       }
     }
     res.send(total_object)
-    //res.send(coreData)
+
   })
 });
-//app.use('/users', usersRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

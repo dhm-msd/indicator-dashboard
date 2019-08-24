@@ -1,5 +1,81 @@
-extends layout
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    |   
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    |   
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    |   
+    meta(name='description', content='')
+    |   
+    meta(name='author', content='')
+    |   
+    title World Indicators Dashboard
+    // Custom fonts for this template
+    link(href='vendor/fontawesome-free/css/all.min.css', rel='stylesheet', type='text/css')
+    |   
+    link(href='//cdn.datatables.net/1.10.19/css/jquery.dataTables.css', rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i', rel='stylesheet')
+    // Custom styles for this template
+    link(href='css/sb-admin-2.min.css', rel='stylesheet')
+  body#page-top
+    // Page Wrapper
+    #wrapper
+      // Sidebar
+      ul#accordionSidebar.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion
+        // Sidebar - Brand
+        a.sidebar-brand.d-flex.align-items-center.justify-content-center(href='index.html')
+          .sidebar-brand-text.mx-3
+            | Indicator Dashboard
+        // Divider
+        hr.sidebar-divider.my-0
+        // Nav Item - Dashboard
+        li.nav-item
+          a.nav-link(href='#')
+            i.fas.fa-fw.fa-tachometer-alt
+            |           
+            span Dashboard
 
-block content
-  h1= title
-  p Welcome to #{title}
+        // Divider
+        hr.sidebar-divider.d-none.d-md-block
+        // Sidebar Toggler (Sidebar)
+        .text-center.d-none.d-md-inline
+          button#sidebarToggle.rounded-circle.border-0
+      // End of Sidebar
+      // Content Wrapper
+      #content-wrapper.d-flex.flex-column
+        // Main Content
+        #content
+
+          // Begin Page Content
+          .container-fluid
+            // Page Heading
+            h1.indicator_name.h3.mb-2.text-gray-800   
+            p.indicator_desc.mb-4
+            // Content Row
+            .row
+              .col-x1-8.col-lg-12
+                if(indicators)
+                    each indicator in indicators
+                        a.btn.btn-primary(href="/"+indicator.id) #{indicator.name}
+                        br
+        // /.container-fluid
+        // End of Main Content
+        // Footer
+        footer.sticky-footer.bg-white
+          .container.my-auto
+            .copyright.text-center.my-auto
+              span Copyright &copy; Your Website 2019
+        // End of Footer
+      // End of Content Wrapper
+    // End of Page Wrapper
+    // Bootstrap core JavaScript
+    script(src='vendor/jquery/jquery.min.js')
+    |   
+    script(src='vendor/bootstrap/js/bootstrap.bundle.min.js')
+    // Core plugin JavaScript
+    script(src='vendor/jquery-easing/jquery.easing.min.js')
+    script(charset="utf8",src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js")
+    // Custom scripts for all pages
+    script(src='js/sb-admin-2.min.js')
